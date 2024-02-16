@@ -10,7 +10,7 @@ public class Parade extends Bataille {
 
 	public String toString() {
 		if(getType() == Type.ACCIDENT) {
-			return "Reparations";
+			return "Réparation";
 		}else if(getType() == Type.CREVAISON) {
 			return "Roue de secours";
 		}else if(getType() == Type.ESSENCE) {

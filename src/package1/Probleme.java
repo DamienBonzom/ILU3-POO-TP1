@@ -8,6 +8,7 @@ public abstract class Probleme extends Carte {
 	
 	public Probleme(int n, Type t) {
 		super(n);
+		type = t;
 	}
 
 	public Type getType() {

@@ -8,7 +8,7 @@ import package1.Carte;
 
 public class Sabot implements Iterable<Carte> {
 	
-	private int nbCartes;
+	private int nbCartes = 0;
 	private int capacite;
 	private Carte[] cartes;
 	
@@ -16,7 +16,6 @@ public class Sabot implements Iterable<Carte> {
 
 	public Sabot(int capacite) {
 		this.capacite = capacite;
-		this.nbCartes = capacite;
 		this.cartes = new Carte[capacite];
 	}
 	
