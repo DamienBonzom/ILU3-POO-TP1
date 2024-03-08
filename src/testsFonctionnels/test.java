@@ -36,7 +36,7 @@ public class test {
 			Carte carte = it.next();
 			System.out.println(String.format("Je prioche %s", carte));
 			it.remove();
-			sabot.ajouterFamilleCarte(asVolant); // ConcurrentModificationException
+			sabot.ajouterFamilleCarte(asVolant); // 2.c ConcurrentModificationException
 			//sabot.piocher();
 		}
 	}

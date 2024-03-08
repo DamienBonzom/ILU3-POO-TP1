@@ -10,4 +10,13 @@ public abstract class Carte {
 	public Carte(int n) {
 		this.nombre = n;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Carte) {
+			Carte carte = (Carte) obj;
+			return carte.getClass() == getClass();
+		}
+		return false;
+	}
 }
