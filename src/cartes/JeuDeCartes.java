@@ -11,6 +11,7 @@ import package1.DebutLimite;
 import package1.FinLimite;
 import package1.Parade;
 import package1.Probleme.Type;
+import utils.Utils;
 
 public class JeuDeCartes {
 
@@ -29,6 +30,7 @@ public class JeuDeCartes {
 				//System.out.println("ajout d'une carte");
 			}
 		}
+		listeCartes = Utils.melanger(listeCartes);
 	}
 
 	public List<Carte> getListeCartes() {
