@@ -121,10 +121,10 @@ public class Joueur implements Cartes{
 				top = zonejeu.getBatailles().get(0);
 			}
 			
-			if(top instanceof Attaque && !estPrioType(top.getType())) {
+			if(top instanceof Attaque && !estPrioType(top.getType()) && ((Parade) carte).getType() == top.getType()) {
 				return true;
-			}else if(top instanceof Parade) {
-				//TODO: faire le dernier cas tp 4 qst 1.2
+			}else if(top instanceof Parade ) {
+				//TODO: dernier cas à faire
 			}
 			
 		}
