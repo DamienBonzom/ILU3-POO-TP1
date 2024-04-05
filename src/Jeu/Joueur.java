@@ -16,13 +16,10 @@ import package1.Botte;
 
 import package1.Carte;
 
-public class Joueur {
+public class Joueur implements Cartes{
 
 	private String nom;
-	private List<Limite> pileLimites = new ArrayList<>();
-	private List<Bataille> batailles = new ArrayList<>();
-	private List<Borne> bornes = new ArrayList<>();
-	private HashSet<Botte> bottes = new HashSet<>();
+	private ZoneDeJeu zonejeu = new ZoneDeJeu();
 	
 	private MainAsListe main = new MainAsListe();
 
@@ -36,19 +33,6 @@ public class Joueur {
 		main.prendre(carte);
 	}
 	
-	public void jouer(Carte carte) {
-		main.jouer(carte);
-		if(carte instanceof Limite) {
-			pileLimites.add(0, (Limite) carte); 
-		}else if(carte instanceof Bataille) {
-			batailles.add(0, (Bataille) carte); 
-		}else if(carte instanceof Borne) {
-			bornes.add(0, (Borne) carte); 
-		}else if(carte instanceof Botte) {
-			bottes.add((Botte) carte); 
-		}
-	}
-	
 	public Carte prendreCarte(List<Carte> sabot) {
 		if(sabot.isEmpty()) {
 			return null;
@@ -60,24 +44,24 @@ public class Joueur {
 		}
 	}
 	
-	public int getKM() {
+	public int donnerKmParcourus() {
 		int total = 0;
-		for(Borne born : bornes) {
+		for(Borne born : zonejeu.getBornes()) {
 			total += born.getKm();
 		}
 		return total;
 	}
 	
 	public boolean estPrioritaire() {
-		return bottes.contains(Carte.prio);
+		return zonejeu.getBottes().contains(Cartes.PRIORITAIRE);
 	}
 	
-	public int getLimite() {
-		if(pileLimites.isEmpty() || estPrioritaire()) {
+	public int donnerLimitationVitesse() {
+		if(zonejeu.getPileLimites().isEmpty() || estPrioritaire()) {
 			return 200;
 		}else {
-			Limite lim = pileLimites.get(0);
-			if(lim instanceof FinLimite) {
+			Limite lim = zonejeu.getPileLimites().get(0);
+			if(lim.equals(FIN_LIMITE)) {
 				return 200;
 			}
 			return 50;
@@ -85,7 +69,7 @@ public class Joueur {
 	}
 	
 	public boolean estPrioType(Type type) {
-		for(Botte bots : bottes) {
+		for(Botte bots : zonejeu.getBottes()) {
 			if(bots.getType() == type) {
 				return true;
 			}
@@ -93,13 +77,13 @@ public class Joueur {
 	}
 	
 	public boolean estBloque() {
-		if(batailles.isEmpty()) {
+		if(zonejeu.getBatailles().isEmpty() && estPrioritaire()) {
 			return false;
 		}else {
-			Bataille sommet = batailles.get(0);
-			if(sommet == Carte.FEU_VERT 
+			Bataille sommet = zonejeu.getBatailles().get(0);
+			if(sommet == Cartes.FEU_VERT 
 					|| (sommet instanceof Parade && estPrioritaire()) 
-					|| (sommet == Carte.FEU_ROUGE && estPrioritaire()) 
+					|| (sommet == Cartes.FEU_ROUGE && estPrioritaire()) 
 					|| (sommet instanceof Attaque && estPrioType(sommet.getType()))) {
 				return false;
 			}
@@ -125,28 +109,42 @@ public class Joueur {
 		return nom;
 	}
 
-	public List<Limite> getPileLimites() {
-		return pileLimites;
-	}
-
-	public List<Bataille> getBatailles() {
-		return batailles;
-	}
-
-	public List<Borne> getBornes() {
-		return bornes;
-	}
-
-	public HashSet<Botte> getBottes() {
-		return bottes;
-	}
 	
 	public MainAsListe getMain() {
 		return main;
 	}
 	
+	public void deposer(Borne borne) {
+		List<Borne> bornes_temp = zonejeu.getBornes();
+		bornes_temp.add(borne);
+		zonejeu.setBornes(bornes_temp);
+	}
+	
+	public void deposer(Limite lim) {
+		List<Limite> lim_temp = zonejeu.getPileLimites();
+		lim_temp.add(0,lim);
+		zonejeu.setPileLimites(lim_temp);
+	}
+	
+	public void deposer(Bataille bat) {
+		List<Bataille> bat_temp = zonejeu.getBatailles();
+		bat_temp.add(0,bat);
+		zonejeu.setBatailles(bat_temp);
+	}
+	
+	public ZoneDeJeu getZonejeu() {
+		return zonejeu;
+	}
+
+
+	public void deposer(Botte bot) {
+		HashSet<Botte> bot_temp = zonejeu.getBottes();
+		bot_temp.add(bot);
+		zonejeu.setBottes(bot_temp);
+	}
+	
 	public void viderBottes() {
-		bottes = new HashSet<>();
+		zonejeu.setBottes(new HashSet<>());
 	}
 
 }

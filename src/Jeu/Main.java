@@ -6,7 +6,7 @@ import java.util.List;
 
 import package1.Carte;
 
-public interface Main {
+public interface Main extends Iterable<Carte> {
 	
 	List<Carte> carteMain = new ArrayList<>();
 	Iterator<Carte> it = carteMain.iterator();

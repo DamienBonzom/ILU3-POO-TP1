@@ -9,7 +9,6 @@ import package1.Carte;
 public class MainAsListe implements Main {
 
 	private List<Carte> carteMain = new ArrayList<>();
-	private Iterator<Carte> it = carteMain.iterator();
 	
 	
 	public MainAsListe() {
@@ -25,6 +24,20 @@ public class MainAsListe implements Main {
 	public void jouer(Carte carte) {
 		assert(carteMain.contains(carte));
 		carteMain.remove(carte);
+	}
+
+	@Override
+	public Iterator<Carte> iterator() {
+		return carteMain.iterator();
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder concat = new StringBuilder();
+		for (Carte carte : carteMain) {
+			concat.append(String.format(", %s", carte.toString()));
+		}
+		return concat.toString();
 	}
 
 }
