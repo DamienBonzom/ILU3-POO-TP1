@@ -7,6 +7,9 @@ import java.util.List;
 import package1.Bataille;
 import package1.Borne;
 import package1.Botte;
+import package1.Carte;
+import package1.DebutLimite;
+import package1.FinLimite;
 import package1.Limite;
 
 public class ZoneDeJeu {
@@ -51,6 +54,7 @@ public class ZoneDeJeu {
 	public HashSet<Botte> getBottes() {
 		return bottes;
 	}
+	
 	
 	public void afficherZone() {
 		System.out.println(getBatailles());

@@ -8,9 +8,11 @@ import package1.Attaque;
 import package1.Bataille;
 import package1.Borne;
 import package1.Carte;
+import package1.DebutLimite;
 import package1.FinLimite;
 import package1.Limite;
 import package1.Parade;
+import package1.Probleme;
 import package1.Probleme.Type;
 import package1.Botte;
 
@@ -89,6 +91,44 @@ public class Joueur implements Cartes{
 			}
 		}
 		return true;
+	}
+	
+	public boolean estDepotAutorise(Carte carte) {
+		if(carte instanceof Borne) {
+			Borne carte2 = (Borne) carte;
+			if(!estBloque() && carte2.getKm() <= donnerLimitationVitesse() && donnerKmParcourus() + carte2.getKm() <=1000) {
+				return true;
+			}
+		}else if(carte instanceof Botte) {
+			return true;
+		}else if(carte instanceof DebutLimite) {
+			if(!estPrioritaire() && donnerLimitationVitesse() != 50) {
+				return true;
+			}
+		}else if(carte instanceof FinLimite) {
+			if(!estPrioritaire() && donnerLimitationVitesse() == 50) {
+				return true;
+			}
+		}else if(carte instanceof Bataille) {
+			Probleme top;
+			if(zonejeu.getBatailles().isEmpty()) {
+				if(estPrioritaire() || carte.equals(Cartes.FEU_ROUGE)){
+					top = Cartes.FEU_VERT;
+				}else {
+					top = Cartes.FEU_ROUGE;
+				}
+			}else {
+				top = zonejeu.getBatailles().get(0);
+			}
+			
+			if(top instanceof Attaque && !estPrioType(top.getType())) {
+				return true;
+			}else if(top instanceof Parade) {
+				//TODO: faire le dernier cas tp 4 qst 1.2
+			}
+			
+		}
+		return false;
 	}
 	
 	
