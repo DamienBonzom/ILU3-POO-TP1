@@ -3,6 +3,7 @@ package Jeu;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import package1.Attaque;
 import package1.Bataille;
@@ -47,27 +48,15 @@ public class Joueur implements Cartes{
 	}
 	
 	public int donnerKmParcourus() {
-		int total = 0;
-		for(Borne born : zonejeu.getBornes()) {
-			total += born.getKm();
-		}
-		return total;
+		return zonejeu.donnerKmParcourus();
 	}
 	
 	public boolean estPrioritaire() {
-		return zonejeu.getBottes().contains(Cartes.PRIORITAIRE);
+		return zonejeu.estPrioritaire();
 	}
 	
 	public int donnerLimitationVitesse() {
-		if(zonejeu.getPileLimites().isEmpty() || estPrioritaire()) {
-			return 200;
-		}else {
-			Limite lim = zonejeu.getPileLimites().get(0);
-			if(lim.equals(FIN_LIMITE)) {
-				return 200;
-			}
-			return 50;
-		}
+		return zonejeu.donnerLimitationVitesse();
 	}
 	
 	public boolean estPrioType(Type type) {
@@ -79,56 +68,11 @@ public class Joueur implements Cartes{
 	}
 	
 	public boolean estBloque() {
-		if(zonejeu.getBatailles().isEmpty() && estPrioritaire()) {
-			return false;
-		}else {
-			Bataille sommet = zonejeu.getBatailles().get(0);
-			if(sommet == Cartes.FEU_VERT 
-					|| (sommet instanceof Parade && estPrioritaire()) 
-					|| (sommet == Cartes.FEU_ROUGE && estPrioritaire()) 
-					|| (sommet instanceof Attaque && estPrioType(sommet.getType()))) {
-				return false;
-			}
-		}
-		return true;
+		return zonejeu.estBloque();
 	}
 	
 	public boolean estDepotAutorise(Carte carte) {
-		if(carte instanceof Borne) {
-			Borne carte2 = (Borne) carte;
-			if(!estBloque() && carte2.getKm() <= donnerLimitationVitesse() && donnerKmParcourus() + carte2.getKm() <=1000) {
-				return true;
-			}
-		}else if(carte instanceof Botte) {
-			return true;
-		}else if(carte instanceof DebutLimite) {
-			if(!estPrioritaire() && donnerLimitationVitesse() != 50) {
-				return true;
-			}
-		}else if(carte instanceof FinLimite) {
-			if(!estPrioritaire() && donnerLimitationVitesse() == 50) {
-				return true;
-			}
-		}else if(carte instanceof Bataille) {
-			Probleme top;
-			if(zonejeu.getBatailles().isEmpty()) {
-				if(estPrioritaire() || carte.equals(Cartes.FEU_ROUGE)){
-					top = Cartes.FEU_VERT;
-				}else {
-					top = Cartes.FEU_ROUGE;
-				}
-			}else {
-				top = zonejeu.getBatailles().get(0);
-			}
-			
-			if(top instanceof Attaque && !estPrioType(top.getType()) && ((Parade) carte).getType() == top.getType()) {
-				return true;
-			}else if(top instanceof Parade ) {
-				//TODO: dernier cas à faire
-			}
-			
-		}
-		return false;
+		return zonejeu.estDepotAutorise(carte);
 	}
 	
 	
@@ -185,6 +129,27 @@ public class Joueur implements Cartes{
 	
 	public void viderBottes() {
 		zonejeu.setBottes(new HashSet<>());
+	}
+	
+	public Set<Coup> coupsPossibles(Set<Joueur> participants){
+		HashSet<Coup> coups = new HashSet<>();
+		for(Joueur joueur : participants) {
+			for(Carte carte : getMain()) {
+				Coup coup = new Coup(joueur, carte);
+				if(coup.estValide(this)) {
+					coups.add(coup);
+				}
+			}
+		}
+		return coups;
+	}
+	
+	public Set<Coup> coupsDefausse(){
+		HashSet<Coup> coups = new HashSet<>();
+		for(Carte carte: getMain()) {
+			coups.add(new Coup(null, carte));
+		}
+		return coups;
 	}
 
 }

@@ -17,7 +17,7 @@ public class testLimite implements Cartes{
 		Joueur j1 = new Joueur("Martin");
 		FinLimite finlim = new FinLimite(1);
 		DebutLimite debutlim = new DebutLimite(1);
-		Botte prioritaire = new Botte(1, Type.FEU);
+		//Botte prioritaire = new Botte(1, Type.FEU);
 		
 		System.out.println(String.format("Limite de vitesse sans carte limites : %d\n", j1.donnerLimitationVitesse()));
 
