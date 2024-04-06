@@ -97,7 +97,7 @@ public class Joueur implements Cartes{
 	public MainAsListe getMain() {
 		return main;
 	}
-	
+	/*
 	public void deposer(Borne borne) {
 		List<Borne> bornes_temp = zonejeu.getBornes();
 		bornes_temp.add(borne);
@@ -116,16 +116,17 @@ public class Joueur implements Cartes{
 		zonejeu.setBatailles(bat_temp);
 	}
 	
-	public ZoneDeJeu getZonejeu() {
-		return zonejeu;
-	}
-
-
 	public void deposer(Botte bot) {
 		HashSet<Botte> bot_temp = zonejeu.getBottes();
 		bot_temp.add(bot);
 		zonejeu.setBottes(bot_temp);
 	}
+	*/
+	
+	public ZoneDeJeu getZonejeu() {
+		return zonejeu;
+	}
+
 	
 	public void viderBottes() {
 		zonejeu.setBottes(new HashSet<>());
@@ -150,6 +151,10 @@ public class Joueur implements Cartes{
 			coups.add(new Coup(null, carte));
 		}
 		return coups;
+	}
+	
+	public boolean deposer(Carte c) {
+		return zonejeu.deposer(c);
 	}
 
 }

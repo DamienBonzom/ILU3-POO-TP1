@@ -145,6 +145,31 @@ public class ZoneDeJeu implements Cartes{
 		return false;
 	}
 	
+	public boolean deposer(Carte c) {
+		if(estDepotAutorise(c)) {
+			if(c instanceof Borne) {
+				return bornes.add((Borne) c);
+			}else if(c instanceof Botte) {
+				Botte c2 = (Botte) c;
+				if(!batailles.isEmpty() && batailles.get(0) instanceof Attaque && batailles.get(0).getType()==c2.getType()) {
+					batailles.remove(0);
+				}
+				return bottes.add((Botte) c);
+			}else if(c instanceof DebutLimite) {
+				pileLimites.add(0,(DebutLimite) c);
+				return pileLimites.contains((DebutLimite) c);
+			}else if(c instanceof FinLimite) {
+				pileLimites.add(0,(FinLimite) c);
+				return pileLimites.contains((FinLimite) c);
+			}else if(c instanceof Bataille) {
+				batailles.add(0,(Bataille) c);
+				return batailles.contains((Bataille) c);
+			}
+		}
+		
+		return false;
+	}
+	
 	
 	public void afficherZone() {
 		System.out.println(getBatailles());
