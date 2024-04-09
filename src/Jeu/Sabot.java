@@ -23,7 +23,7 @@ public class Sabot implements Iterable<Carte> {
 		return nbCartes == 0;
 	}
 	
-	private void ajouterCarte(Carte carte){
+	public void ajouterCarte(Carte carte){
 		if(nbCartes == capacite) {
 			throw new ArrayIndexOutOfBoundsException("Le sabot est plein");
 		}

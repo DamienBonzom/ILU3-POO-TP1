@@ -156,5 +156,9 @@ public class Joueur implements Cartes{
 	public boolean deposer(Carte c) {
 		return zonejeu.deposer(c);
 	}
+	
+	public void retirerDeLaMain(Carte carte) {
+		main.jouer(carte);
+	}
 
 }
