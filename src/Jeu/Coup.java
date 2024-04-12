@@ -32,6 +32,11 @@ public class Coup {
 	public boolean equals(Object objet) {
 		if(objet instanceof Coup) {
 			Coup coup = (Coup) objet;
+			if(coup.getCible() == null && cible == null) {
+				return coup.getCarte().equals(carte);
+			}else if(coup.getCible() == null && cible != null || cible == null && coup.getCible() != null) {
+				return false;
+			}
 			return coup.getCible().equals(cible) && coup.getCarte().equals(carte);
 		}
 		return false;
@@ -39,7 +44,15 @@ public class Coup {
 	
 	@Override
 	public int hashCode() {
+		if(cible == null) {
+			return 31*carte.hashCode();
+		}
 		return 31*carte.hashCode() + 7*cible.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("deposer la carte %s dans la zone de jeu de %s", carte.toString(), cible.toString());
 	}
 
 }

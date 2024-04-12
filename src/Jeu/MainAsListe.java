@@ -34,8 +34,14 @@ public class MainAsListe implements Main {
 	@Override
 	public String toString() {
 		StringBuilder concat = new StringBuilder();
+		int indice = 0;
 		for (Carte carte : carteMain) {
-			concat.append(String.format(", %s", carte.toString()));
+			if(indice == 0) {
+				concat.append(String.format("%s", carte.toString()));
+			}else {
+				concat.append(String.format(", %s", carte.toString()));
+			}
+			indice += 1;
 		}
 		return concat.toString();
 	}

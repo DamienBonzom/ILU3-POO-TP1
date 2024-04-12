@@ -2,6 +2,7 @@ package Jeu;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,8 @@ import package1.Probleme.Type;
 import package1.Botte;
 
 import package1.Carte;
+
+import java.util.Random;
 
 public class Joueur implements Cartes{
 
@@ -137,7 +140,7 @@ public class Joueur implements Cartes{
 		for(Joueur joueur : participants) {
 			for(Carte carte : getMain()) {
 				Coup coup = new Coup(joueur, carte);
-				if(coup.estValide(this)) {
+				if(coup.estValide(this) && estDepotAutorise(carte)) {
 					coups.add(coup);
 				}
 			}
@@ -159,6 +162,32 @@ public class Joueur implements Cartes{
 	
 	public void retirerDeLaMain(Carte carte) {
 		main.jouer(carte);
+	}
+	
+	private <E> E choisirElement(Set<E> liste, int indice) {
+		int i = 0;
+		for(Iterator<E> it = liste.iterator(); it.hasNext();){
+			if(i == indice) {
+				E c = it.next();
+				it.remove();
+				return c;
+			}else {
+				it.next();
+				i+=1;
+			}
+		}
+		return null;
+	}
+	
+	public Coup choisirCoup(Set<Joueur> participants) {
+		Set<Coup> liste_coups = coupsPossibles(participants);
+		Set<Coup> liste_defausses = coupsDefausse();
+		Random randomNumbers = new Random();
+		if(liste_coups.size() == 0) {
+			return choisirElement(liste_defausses, randomNumbers.nextInt(liste_defausses.size()));
+		}else {
+			return choisirElement(liste_coups, randomNumbers.nextInt(liste_coups.size()));
+		}
 	}
 
 }

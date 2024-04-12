@@ -32,6 +32,10 @@ public class JeuDeCartes {
 		}
 		listeCartes = Utils.melanger(listeCartes);
 	}
+	
+	public int get_taille() {
+		return listeCartes.size();
+	}
 
 	public List<Carte> getListeCartes() {
 		return listeCartes;

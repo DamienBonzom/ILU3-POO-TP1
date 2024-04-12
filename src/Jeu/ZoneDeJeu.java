@@ -72,8 +72,8 @@ public class ZoneDeJeu implements Cartes{
 	}
 	
 	public boolean estBloque() {
-		if(getBatailles().isEmpty() && estPrioritaire()) {
-			return false;
+		if(getBatailles().isEmpty()) {
+			return !estPrioritaire();
 		}else {
 			Bataille sommet = getBatailles().get(0);
 			if(sommet == Cartes.FEU_VERT 
@@ -106,6 +106,44 @@ public class ZoneDeJeu implements Cartes{
 		return total;
 	}
 	
+	private boolean estDepotLimiteAutorise(Limite carte) {
+		if(carte instanceof DebutLimite) {
+			if(!estPrioritaire() && donnerLimitationVitesse() != 50) {
+				return true;
+			}
+		}else if(carte instanceof FinLimite) {
+			if(!estPrioritaire() && donnerLimitationVitesse() == 50) {
+				return true;
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	private boolean estDepotBatailleAutorise(Bataille carte) {
+		
+		if(estPrioType(carte.getType())) {
+			return false;
+		}
+		
+		if(carte instanceof Attaque && !estPrioType(carte.getType()) && !batailles.isEmpty()) {
+			return true;
+		}
+		
+		if(carte.equals(Cartes.FEU_VERT)) {
+			if(batailles.isEmpty() 
+					|| batailles.get(0).equals(Cartes.FEU_ROUGE) 
+					|| (!batailles.get(0).equals(Cartes.FEU_VERT) && batailles.get(0) instanceof Parade)) {
+				return true;
+			}
+		}else if(!batailles.isEmpty() && batailles.get(0) instanceof Attaque && batailles.get(0).getType() == carte.getType()){
+			return true;
+		}
+		return false;
+	}
+
+	
 	public boolean estDepotAutorise(Carte carte) {
 		if(carte instanceof Borne) {
 			Borne carte2 = (Borne) carte;
@@ -114,33 +152,10 @@ public class ZoneDeJeu implements Cartes{
 			}
 		}else if(carte instanceof Botte) {
 			return true;
-		}else if(carte instanceof DebutLimite) {
-			if(!estPrioritaire() && donnerLimitationVitesse() != 50) {
-				return true;
-			}
-		}else if(carte instanceof FinLimite) {
-			if(!estPrioritaire() && donnerLimitationVitesse() == 50) {
-				return true;
-			}
+		}else if(carte instanceof Limite) {
+			return estDepotLimiteAutorise((Limite) carte);
 		}else if(carte instanceof Bataille) {
-			Probleme top;
-			Bataille carte2 = (Bataille) carte;
-			if(getBatailles().isEmpty()) {
-				if(estPrioritaire() || carte2.equals(Cartes.FEU_ROUGE)){
-					top = Cartes.FEU_VERT;
-				}else {
-					top = Cartes.FEU_ROUGE;
-				}
-			}else {
-				top = getBatailles().get(0);
-			}
-			
-			if(top instanceof Attaque && !estPrioType(top.getType()) && carte2 instanceof Parade && carte2.getType() == top.getType()) {
-				return true;
-			}else if(top instanceof Parade && carte2 instanceof Attaque && !estPrioType(carte2.getType())) {
-				return true;
-			}
-			
+			return estDepotBatailleAutorise((Bataille) carte);
 		}
 		return false;
 	}
