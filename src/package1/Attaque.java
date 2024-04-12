@@ -7,7 +7,7 @@ import package1.Probleme.Type;
 
 public class Attaque extends Bataille {
 
-static Map<Type, String> nom = new HashMap<>();
+	static Map<Type, String> nom = new HashMap<>();
 	
 	static {
 		nom.put(Type.ACCIDENT, "Accident");

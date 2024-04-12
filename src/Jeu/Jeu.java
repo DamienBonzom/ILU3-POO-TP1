@@ -2,6 +2,8 @@ package Jeu;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,12 +12,13 @@ import package1.Carte;
 
 public class Jeu {
 
-	private Set<Joueur> joueurs = new HashSet<>();
+	private Set<Joueur> joueurs = new LinkedHashSet<>();
+	Iterator<Joueur> it;
 	private Sabot sabot;
 	private int NBCARTES = 6;
 	
 	public void Jeu() {
-		
+		it = joueurs.iterator();
 	}
 	
 	public void inscrire(Joueur joueur) {
@@ -57,6 +60,10 @@ public class Jeu {
 			}
 			System.out.println("");
 		}
+	}
+	
+	public Joueur donnerJoueurSuivant() {
+		return it.next();
 	}
 	
 }
