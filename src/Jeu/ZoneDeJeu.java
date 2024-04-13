@@ -76,10 +76,10 @@ public class ZoneDeJeu implements Cartes{
 			return !estPrioritaire();
 		}else {
 			Bataille sommet = getBatailles().get(0);
-			if(sommet == Cartes.FEU_VERT 
+			if(sommet.equals(Cartes.FEU_VERT)
 					|| (sommet instanceof Parade && estPrioritaire()) 
-					|| (sommet == Cartes.FEU_ROUGE && estPrioritaire()) 
-					|| (sommet instanceof Attaque && estPrioType(sommet.getType()))) {
+					|| (sommet.equals(Cartes.FEU_ROUGE) && estPrioritaire()) 
+					|| (sommet instanceof Attaque && estPrioType(sommet.getType()) && estPrioritaire())) {
 				return false;
 			}
 		}
@@ -127,7 +127,7 @@ public class ZoneDeJeu implements Cartes{
 			return false;
 		}
 		
-		if(carte instanceof Attaque && !estPrioType(carte.getType()) && !batailles.isEmpty()) {
+		if(carte instanceof Attaque && !estPrioType(carte.getType())) {
 			return true;
 		}
 		
@@ -181,7 +181,6 @@ public class ZoneDeJeu implements Cartes{
 				return batailles.contains((Bataille) c);
 			}
 		}
-		
 		return false;
 	}
 	

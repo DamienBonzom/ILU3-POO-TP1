@@ -7,11 +7,12 @@ import Jeu.Jeu;
 public class TestJeu {
 	public static void main(String[] args) {
 		Jeu jeu = new Jeu();
-		jeu.inscrire(new Joueur("Jack"));
-		jeu.inscrire(new Joueur("Bill"));
-		jeu.inscrire(new Joueur("Luffy"));
+		jeu.inscrire(new Joueur("Damien"));
+		jeu.inscrire(new Joueur("Melissa"));
+		jeu.inscrire(new Joueur("Emily"));
+		jeu.inscrire(new Joueur("Martin"));
 		jeu.remplirSabot(new JeuDeCartes());
 		jeu.distribuerCartes();
-		jeu.jouerTour();
+		jeu.lancer();
 	}
 }

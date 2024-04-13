@@ -54,6 +54,10 @@ public class Sabot implements Iterable<Carte> {
 		return carteRetiree;
 	}
 	
+	public boolean sabotEstVide() {
+		return nbCartes == 0;
+	}
+	
 	public Iterator<Carte> iterator(){
 		return new Iterateur();
 	}
